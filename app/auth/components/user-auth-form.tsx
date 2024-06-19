@@ -1,6 +1,11 @@
 "use client"
 
 import * as React from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,11 +17,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 
 const FormSchema = z.object({
@@ -42,9 +42,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     toast({
       title: "You submitted the following values:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          Hi
-        </pre>
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Hi</pre>
       ),
     })
   }
