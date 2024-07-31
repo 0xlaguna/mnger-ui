@@ -2,12 +2,15 @@ import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
 
+import { RQProvider } from "@/config/react-query"
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+
+import { NextAuthProvider } from "./auth-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -44,15 +47,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div vaul-drawer-wrapper="">
-              <div className="bg-background relative flex min-h-screen flex-col">
-                {children}
-              </div>
-              <Toaster />
-            </div>
-            <TailwindIndicator />
-          </ThemeProvider>
+          <NextAuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <RQProvider>
+                <div vaul-drawer-wrapper="">
+                  <div className="bg-background relative flex min-h-screen flex-col">
+                    {children}
+                  </div>
+                  <Toaster />
+                </div>
+                <TailwindIndicator />
+              </RQProvider>
+            </ThemeProvider>
+          </NextAuthProvider>
         </body>
       </html>
     </>

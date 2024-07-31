@@ -1,19 +1,12 @@
 "use client"
 
 import * as React from "react"
+import { useFormState } from "react-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import {
   Card,
   CardContent,
@@ -22,9 +15,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+
+import { authenticate } from "@/lib/actions"
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -34,7 +36,12 @@ const FormSchema = z.object({
 interface UserLoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [pending, startTransaction] = React.useTransition()
+
+  const [, formAction, ] = useFormState(
+    authenticate,
+    undefined,
+  )
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -44,19 +51,9 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log({ data })
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Hi</pre>
-      ),
-    })
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form action={(formData) => startTransaction(() => formAction(formData))}>
         <Card className="w-full max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
@@ -73,7 +70,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                    <Input placeholder="m@example.com" {...field} />
+                      <Input placeholder="mail@example.com" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -86,8 +83,8 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="" {...field} />
+                    <FormControl >
+                      <Input placeholder="" {...field} type="password" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,8 +93,8 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading && (
+            <Button type="submit" disabled={pending} className="w-full">
+              {pending && (
                 <Icons.spinner className="mr-2 size-4 animate-spin" />
               )}
               Sign in
