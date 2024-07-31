@@ -1,5 +1,6 @@
 "use client"
 
+import useGetMe from "@/hooks/data/useGetMe"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,10 +13,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Icons } from "@/components/icons"
 
 import LogOut from "./log-out"
 
 export function UserNav() {
+  const { getMeData, getMeLoading } = useGetMe()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,14 +31,22 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
-            </p>
-          </div>
-        </DropdownMenuLabel>
+        {getMeLoading ? (
+          <Icons.spinner className="mr-2 size-4 animate-spin" />
+        ) : (
+          <>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {getMeData?.first_name} {getMeData?.last_name}
+                </p>
+                <p className="text-muted-foreground text-xs leading-none">
+                  {getMeData?.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
