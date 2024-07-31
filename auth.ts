@@ -37,25 +37,25 @@ const config = {
     async jwt({ token, user }) {
       if (user) {
         // @ts-ignore
-        token.accessToken = user.token;
-        token.name = user.name;
+        token.accessToken = user.token
+        token.name = user.name
         // @ts-ignore
-        token.argonToken = user.token;
+        token.argonToken = user.token
         // @ts-ignore
-        token.userId = user.user_id;
+        token.userId = user.user_id
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
       // @ts-ignore
-      session.accessToken = token.accessToken;
+      session.accessToken = token.accessToken
       // @ts-ignore
-      session.user.argonToken = token.argonToken;
+      session.user.argonToken = token.argonToken
       // @ts-ignore
-      session.user.id = token.userId;
+      session.user.id = token.userId
 
-      return session;
-    }
+      return session
+    },
   },
 } satisfies NextAuthConfig
 

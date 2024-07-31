@@ -1,27 +1,27 @@
+import { useRouter } from "next/navigation"
+
 import {
   DropdownMenuItem,
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 
-import { useRouter } from "next/navigation"
-
 export default function LogOut() {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    const res = await fetch('/api/logout', {
-      method: 'GET',
+    const res = await fetch("/api/logout", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    });
+    })
 
     if (res.ok) {
-      router.push('/auth');
+      router.push("/auth")
     } else {
-      console.error('Failed to sign out');
+      console.error("Failed to sign out")
     }
-  };
+  }
 
   return (
     <DropdownMenuItem onClick={handleSignOut}>

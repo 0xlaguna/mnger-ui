@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { useFormState } from "react-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useFormState } from "react-dom"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { authenticate } from "@/lib/actions"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -26,8 +27,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Icons } from "@/components/icons"
 
-import { authenticate } from "@/lib/actions"
-
 const FormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(5),
@@ -38,10 +37,7 @@ interface UserLoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
   const [pending, startTransaction] = React.useTransition()
 
-  const [, formAction, ] = useFormState(
-    authenticate,
-    undefined,
-  )
+  const [, formAction] = useFormState(authenticate, undefined)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -83,7 +79,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <FormControl >
+                    <FormControl>
                       <Input placeholder="" {...field} type="password" />
                     </FormControl>
                     <FormMessage />
