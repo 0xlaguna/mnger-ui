@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 
-import { fetcher } from "@/lib/api/api-client"
+import { GET } from "@/lib/api/api-client"
 
 interface GeMeData {
   email: string
@@ -28,7 +28,7 @@ const useGetMe = () => {
     Error
   >({
     queryKey: ["users-getme"],
-    queryFn: () => fetcher<GeMeData>("/users/me", {}, headers),
+    queryFn: () => GET<GeMeData>("/users/me", {}, headers),
     enabled: !!token,
   })
 

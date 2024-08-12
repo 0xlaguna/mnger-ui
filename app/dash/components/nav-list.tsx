@@ -1,15 +1,15 @@
 "use client"
 
-import { siteConfig } from "@/config/site"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { siteConfig } from "@/config/site"
 
 interface NavListProps {
   linkClassName: string
 }
 
-export function NavList({linkClassName}: NavListProps) {
+export function NavList({ linkClassName }: NavListProps) {
   const pathname = usePathname()
 
   const isActive = (path: string) =>

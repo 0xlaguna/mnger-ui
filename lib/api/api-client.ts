@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios"
 
 import axiosInstance from "@/config/axios/client-instance"
 
-export const fetcher = async <T>(
+export const GET = async <T>(
   url: string,
   params: any,
   headers: any
@@ -15,7 +15,7 @@ export const fetcher = async <T>(
   return response.data
 }
 
-export const poster = async <T, U>(
+export const POST = async <T, U>(
   url: string,
   data: T,
   headers: any
@@ -30,7 +30,7 @@ export const poster = async <T, U>(
   return response.data
 }
 
-export const destroy = async (url: string, params: any, headers: any) => {
+export const DELETE = async (url: string, params: any, headers: any) => {
   if (!headers["x-session-token"]) {
     throw new Error("Session token is missing")
   }
