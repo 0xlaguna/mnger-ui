@@ -17,6 +17,7 @@ export interface WorkOrder {
   description: string
   start_date: Date
   end_date?: Date
+  created_at: Date
 }
 
 interface QueryParams {

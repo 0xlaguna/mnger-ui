@@ -1,3 +1,6 @@
+"use client"
+
+import { useWorkOrderStore } from "@/providers/workorder-store-provider"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -7,6 +10,7 @@ import {
   TruckIcon,
 } from "lucide-react"
 
+import { useWorkOrder } from "@/hooks/data/useWorkOrder"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -29,32 +33,51 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination"
 import { Separator } from "@/components/ui/separator"
+import { Icons } from "@/components/icons"
 
 export function WorkOrderDetail() {
+  const { selectedWorkOrderId } = useWorkOrderStore((state) => state)
+
+  const { workOrderData, workOrderLoading } = useWorkOrder(selectedWorkOrderId)
+
+  if (workOrderLoading) {
+    return (
+      <Card className="overflow-hidden">
+        <Icons.spinner className="mr-2 size-4 animate-spin" />
+      </Card>
+    )
+  }
+
+  if (!selectedWorkOrderId) {
+    return (
+      <Card className="overflow-hidden">
+        <CardHeader className="bg-muted/50 flex flex-row items-start"></CardHeader>
+        <CardContent className="p-6 text-sm">
+          <div
+            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+          >
+            <div className="flex flex-col items-center gap-1 text-center">
+              <h3 className="text-2xl font-bold tracking-tight">
+                Select or add a new Work Order
+              </h3>
+              <Button className="mt-4">Add Product</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
-    <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
+    <Card className="overflow-hidden">
       <CardHeader className="bg-muted/50 flex flex-row items-start">
         <div className="grid gap-0.5">
           <CardTitle className="group flex items-center gap-2 text-lg">
-            Order Oe31b70H
-            <Button
-              size="icon"
-              variant="outline"
-              className="size-6 opacity-0 transition-opacity group-hover:opacity-100"
-            >
-              <CopyIcon className="size-3" />
-              <span className="sr-only">Copy Order ID</span>
-            </Button>
+            Work Order {workOrderData?.title}
           </CardTitle>
-          <CardDescription>Date: November 23, 2023</CardDescription>
+          <CardDescription>{workOrderData?.id}</CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1">
-          <Button size="sm" variant="outline" className="h-8 gap-1">
-            <TruckIcon className="size-3.5" />
-            <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-              Track Order
-            </span>
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="outline" className="size-8">
@@ -73,97 +96,19 @@ export function WorkOrderDetail() {
       </CardHeader>
       <CardContent className="p-6 text-sm">
         <div className="grid gap-3">
-          <div className="font-semibold">Order Details</div>
+          <div className="font-semibold">Work Order Details</div>
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">
-                Glimmer Lamps x <span>2</span>
-              </span>
-              <span>$250.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">
-                Aqua Filters x <span>1</span>
-              </span>
-              <span>$49.00</span>
-            </li>
-          </ul>
-          <Separator className="my-2" />
-          <ul className="grid gap-3">
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span>$299.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Shipping</span>
-              <span>$5.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Tax</span>
-              <span>$25.00</span>
-            </li>
-            <li className="flex items-center justify-between font-semibold">
-              <span className="text-muted-foreground">Total</span>
-              <span>$329.00</span>
+              <span className="text-muted-foreground">Start Date</span>
+              <span>{new Date(workOrderData?.start_date!).toDateString()}</span>
             </li>
           </ul>
         </div>
         <Separator className="my-4" />
-        <div className="grid grid-cols-2 gap-4">
-          <div className="grid gap-3">
-            <div className="font-semibold">Shipping Information</div>
-            <address className="text-muted-foreground grid gap-0.5 not-italic">
-              <span>Liam Johnson</span>
-              <span>1234 Main St.</span>
-              <span>Anytown, CA 12345</span>
-            </address>
-          </div>
-          <div className="grid auto-rows-max gap-3">
-            <div className="font-semibold">Billing Information</div>
-            <div className="text-muted-foreground">
-              Same as shipping address
-            </div>
-          </div>
-        </div>
-        <Separator className="my-4" />
-        <div className="grid gap-3">
-          <div className="font-semibold">Customer Information</div>
-          <dl className="grid gap-3">
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Customer</dt>
-              <dd>Liam Johnson</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Email</dt>
-              <dd>
-                <a href="#">liam@acme.com</a>
-              </dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Phone</dt>
-              <dd>
-                <a href="#">+1 234 567 890</a>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <Separator className="my-4" />
-        <div className="grid gap-3">
-          <div className="font-semibold">Payment Information</div>
-          <dl className="grid gap-3">
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground flex items-center gap-1">
-                <CreditCardIcon className="size-4" />
-                Visa
-              </dt>
-              <dd>**** **** **** 4532</dd>
-            </div>
-          </dl>
-        </div>
       </CardContent>
       <CardFooter className="bg-muted/50 flex flex-row items-center border-t px-6 py-3">
         <div className="text-muted-foreground text-xs">
-          Updated <time dateTime="2023-11-23">November 23, 2023</time>
+          Updated <time dateTime="2023-11-23">November 23, 2024</time>
         </div>
         <Pagination className="ml-auto mr-0 w-auto">
           <PaginationContent>

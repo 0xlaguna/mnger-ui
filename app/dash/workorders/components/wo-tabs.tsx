@@ -19,8 +19,6 @@ import { WorkOrderTodoList } from "./wo-todo-list"
 export function WorkOrderTabs() {
   const { workorderListData } = useWorkOrderList({ page: 1, per_page: 4 })
 
-  console.log(workorderListData)
-
   return (
     <Tabs defaultValue="todo">
       <div className="flex items-center">

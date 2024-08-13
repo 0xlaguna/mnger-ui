@@ -1,3 +1,7 @@
+"use client"
+
+import { useWorkOrderStore } from "@/providers/workorder-store-provider"
+
 import { WorkOrder } from "@/hooks/data/useWorkOrderList"
 import {
   Card,
@@ -20,13 +24,22 @@ interface WorkOrderTodoListProps {
 }
 
 export function WorkOrderTodoList({ workOrderList }: WorkOrderTodoListProps) {
+  const { setSelectedWorkOrderId } = useWorkOrderStore((state) => state)
+
   const workOrderTableList = workOrderList.map((wo) => {
     return (
-      <TableRow key={wo.id}>
+      <TableRow
+        key={wo.id}
+        className="cursor-pointer"
+        onClick={(e) => {
+          e.preventDefault()
+          setSelectedWorkOrderId(wo.id)
+        }}
+      >
         <TableCell>{wo.title}</TableCell>
         <TableCell className="hidden md:table-cell">{wo.description}</TableCell>
         <TableCell className="hidden md:table-cell">
-          {new Date(wo.start_date).toString()}
+          {new Date(wo.start_date).toDateString()}
         </TableCell>
       </TableRow>
     )

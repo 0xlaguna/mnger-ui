@@ -7,8 +7,6 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user
       const isOnDashboard = nextUrl.pathname.startsWith("/dash")
 
-      console.log(auth)
-
       if (isOnDashboard) {
         if (isLoggedIn) return true
         return false
