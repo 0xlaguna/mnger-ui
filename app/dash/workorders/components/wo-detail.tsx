@@ -53,9 +53,7 @@ export function WorkOrderDetail() {
       <Card className="overflow-hidden">
         <CardHeader className="bg-muted/50 flex flex-row items-start"></CardHeader>
         <CardContent className="p-6 text-sm">
-          <div
-            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-          >
+          <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
             <div className="flex flex-col items-center gap-1 text-center">
               <h3 className="text-2xl font-bold tracking-tight">
                 Select or add a new Work Order

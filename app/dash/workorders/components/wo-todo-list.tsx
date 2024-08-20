@@ -24,13 +24,17 @@ interface WorkOrderTodoListProps {
 }
 
 export function WorkOrderTodoList({ workOrderList }: WorkOrderTodoListProps) {
-  const { setSelectedWorkOrderId } = useWorkOrderStore((state) => state)
+  const { setSelectedWorkOrderId, selectedWorkOrderId } = useWorkOrderStore(
+    (state) => state
+  )
 
   const workOrderTableList = workOrderList.map((wo) => {
+    const isSelected = wo.id === selectedWorkOrderId
+
     return (
       <TableRow
         key={wo.id}
-        className="cursor-pointer"
+        className={`cursor-pointer ${isSelected ? "bg-muted/50" : ""}`}
         onClick={(e) => {
           e.preventDefault()
           setSelectedWorkOrderId(wo.id)
