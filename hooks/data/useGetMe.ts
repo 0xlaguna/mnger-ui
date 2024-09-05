@@ -4,14 +4,8 @@ import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 
+import { User } from "@/types/v0/users"
 import { GET } from "@/lib/api/api-client"
-
-interface GeMeData {
-  email: string
-  first_name: string
-  middle_name: string
-  last_name: string
-}
 
 const useGetMe = () => {
   const session = useSession()
@@ -24,11 +18,11 @@ const useGetMe = () => {
   }
 
   const { isError, isLoading, isSuccess, data, refetch } = useQuery<
-    GeMeData,
+    User,
     Error
   >({
     queryKey: ["users-getme"],
-    queryFn: () => GET<GeMeData>("/users/me", {}, headers),
+    queryFn: () => GET<User>("/users/me", {}, headers),
     enabled: !!token,
   })
 

@@ -1,5 +1,9 @@
 "use client"
 
+import Link from "next/link"
+import { useSession } from "next-auth/react"
+
+import { avatarUrl } from "@/lib/utils"
 import useGetMe from "@/hooks/data/useGetMe"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -20,12 +24,21 @@ import LogOut from "./log-out"
 export function UserNav() {
   const { getMeData, getMeLoading } = useGetMe()
 
+  const session = useSession()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+        <Button variant="ghost" className="relative size-8 rounded-full">
+          <Avatar className="size-8">
+            <AvatarImage
+              src={
+                getMeData?.avatar
+                  ? avatarUrl(getMeData.avatar, session.data?.accessToken!)
+                  : undefined
+              }
+              alt={getMeData?.first_name}
+            />
             <AvatarFallback>ML</AvatarFallback>
           </Avatar>
         </Button>
@@ -58,7 +71,7 @@ export function UserNav() {
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            Settings
+            <Link href="/dash/settings">Settings</Link>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>New Team</DropdownMenuItem>
