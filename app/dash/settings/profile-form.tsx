@@ -1,27 +1,24 @@
 "use client"
 
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
+import { useMeStore } from "@/providers/me-store-provider"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { avatarUrl } from "@/lib/utils"
-import useGetMe from "@/hooks/data/useGetMe"
 import useMutateProfile from "@/hooks/data/useMutateProfile"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/use-toast"
 
 const MAX_FILE_SIZE = 500000
@@ -55,8 +52,7 @@ const defaultValues: Partial<ProfileFormValues> = {
 }
 
 export function ProfileForm() {
-  const { getMeData, getMeLoading } = useGetMe()
-  const session = useSession()
+  const { user, session } = useMeStore((state) => state)
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -65,9 +61,11 @@ export function ProfileForm() {
   })
 
   const fileRef = form.register("avatar")
-  const [avatarPreview, setAvatarPreview] = useState<string>()
+  const [avatarPreview, setAvatarPreview] = useState<string | undefined>(
+    avatarUrl(user?.avatar, session?.accessToken!!)
+  )
 
-  const { mutateProfile } = useMutateProfile(getMeData?.id)
+  const { mutateProfile } = useMutateProfile(user?.id)
 
   function setPreview(event: FormEvent<HTMLInputElement>) {
     const files = event.currentTarget.files
@@ -78,13 +76,6 @@ export function ProfileForm() {
       : undefined
     setAvatarPreview(urlFileAvatar)
   }
-
-  useEffect(() => {
-    if (getMeData?.avatar) {
-      const token = session.data?.accessToken
-      setAvatarPreview(avatarUrl(getMeData.avatar, token!!))
-    }
-  }, [getMeData, session])
 
   function onSubmit(data: ProfileFormValues) {
     const formData = new FormData()
@@ -102,18 +93,6 @@ export function ProfileForm() {
     }
   }
 
-  if (getMeLoading) {
-    return (
-      <div className="flex items-center space-x-4">
-        <Skeleton className="size-12 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -124,7 +103,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>
                 <Avatar className="size-12">
-                  <AvatarImage src={avatarPreview} alt="@" />
+                  <AvatarImage src={avatarPreview} alt={user?.first_name} />
                   <AvatarFallback></AvatarFallback>
                 </Avatar>
                 Profile picture

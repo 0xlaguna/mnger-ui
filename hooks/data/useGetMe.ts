@@ -31,6 +31,7 @@ const useGetMe = () => {
     getMeLoading: isLoading || !token,
     getMeSuccess: isSuccess,
     getMeData: data,
+    getMeSession: session.data,
   }
 }
 

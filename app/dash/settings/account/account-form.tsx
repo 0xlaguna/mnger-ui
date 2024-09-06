@@ -33,6 +33,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
+import { useMeStore } from "@/providers/me-store-provider"
 
 const languages = [
   { label: "English", value: "en" },
@@ -60,12 +61,15 @@ const accountFormSchema = z.object({
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
-const defaultValues: Partial<AccountFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-}
-
 export function AccountForm() {
+  const { user } = useMeStore((state) => state)
+
+  const defaultValues: Partial<AccountFormValues> = {
+    first_name: user?.first_name,
+    middle_name: user?.middle_name,
+    last_name: user?.last_name
+  }
+
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -92,7 +96,7 @@ export function AccountForm() {
             <FormItem>
               <FormLabel>First name</FormLabel>
               <FormControl>
-                <Input placeholder="John" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 Used to be displayed on your profile and in emails.
@@ -108,7 +112,7 @@ export function AccountForm() {
             <FormItem>
               <FormLabel>Middle name</FormLabel>
               <FormControl>
-                <Input placeholder="A" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,7 +125,7 @@ export function AccountForm() {
             <FormItem>
               <FormLabel>Last name</FormLabel>
               <FormControl>
-                <Input placeholder="Doe" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 Used to be displayed on your profile and in emails.
