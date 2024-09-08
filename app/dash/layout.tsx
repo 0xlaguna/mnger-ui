@@ -4,7 +4,7 @@ import { MeStoreProvider } from "@/providers/me-store-provider"
 import { MeState } from "@/stores/me-store"
 
 import useGetMe from "@/hooks/data/useGetMe"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Icons } from "@/components/icons"
 
 import LayoutEntry from "./layout-entry"
 
@@ -17,11 +17,11 @@ export default function Layout({ children }: LayoutProps) {
 
   if (getMeLoading) {
     return (
-      <div className="flex items-center space-x-4">
-        <Skeleton className="size-12 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="flex items-center space-x-6">
+          <div className="relative">
+            <Icons.spinner className="size-11 animate-spin" />
+          </div>
         </div>
       </div>
     )

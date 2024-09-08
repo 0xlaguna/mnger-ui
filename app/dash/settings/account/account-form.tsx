@@ -1,5 +1,6 @@
 "use client"
 
+import { useMeStore } from "@/providers/me-store-provider"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CalendarIcon, CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
@@ -33,7 +34,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
-import { useMeStore } from "@/providers/me-store-provider"
 
 const languages = [
   { label: "English", value: "en" },
@@ -67,7 +67,7 @@ export function AccountForm() {
   const defaultValues: Partial<AccountFormValues> = {
     first_name: user?.first_name,
     middle_name: user?.middle_name,
-    last_name: user?.last_name
+    last_name: user?.last_name,
   }
 
   const form = useForm<AccountFormValues>({
