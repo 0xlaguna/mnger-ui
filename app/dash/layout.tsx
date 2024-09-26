@@ -3,7 +3,7 @@
 import { MeStoreProvider } from "@/providers/me-store-provider"
 import { MeState } from "@/stores/me-store"
 
-import useGetMe from "@/hooks/data/useGetMe"
+import useInitialGetMe from "@/hooks/data/useInitialGetMe"
 import { Icons } from "@/components/icons"
 
 import LayoutEntry from "./layout-entry"
@@ -13,7 +13,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { getMeData, getMeSession, getMeLoading } = useGetMe()
+  const { getMeData, getMeSession, getMeLoading } = useInitialGetMe()
 
   if (getMeLoading) {
     return (

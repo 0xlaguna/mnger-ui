@@ -11,7 +11,7 @@ export function MainNav() {
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Package2 className="size-6" />
-          <span className="">Acme Inc</span>
+          <span className="">Moduler LLC</span>
         </Link>
         <Button variant="outline" size="icon" className="ml-auto size-8">
           <Bell className="size-4" />

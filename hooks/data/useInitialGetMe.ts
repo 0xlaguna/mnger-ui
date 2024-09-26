@@ -7,8 +7,8 @@ import { useSession } from "next-auth/react"
 import { User } from "@/types/v0/users"
 import { GET } from "@/lib/api/api-client"
 
-const useGetMe = () => {
-  const session = useSession()
+const useInitialGetMe = () => {
+  const session = useSession({required: true})
 
   useEffect(() => {}, [session])
 
@@ -21,7 +21,7 @@ const useGetMe = () => {
     User,
     Error
   >({
-    queryKey: ["users-getme"],
+    queryKey: ["users-initial-getme"],
     queryFn: () => GET<User>("/users/me", {}, headers),
     enabled: !!token,
   })
@@ -35,4 +35,4 @@ const useGetMe = () => {
   }
 }
 
-export default useGetMe
+export default useInitialGetMe
