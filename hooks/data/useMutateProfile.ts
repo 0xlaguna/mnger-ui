@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import { User } from "@/types/v0/users"
 import { PATCH } from "@/lib/api/api-client"
 
-const useMutateProfile = (userId?: number) => {
+const useMutateProfile = (userId?: string) => {
   const session = useSession()
 
   useEffect(() => {}, [session, userId])
